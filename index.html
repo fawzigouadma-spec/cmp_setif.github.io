@@ -2,49 +2,102 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
+    <title>CMP SETIF - موقعي الرسمي</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقعي الشخصي</title>
+
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            text-align: center;
-            padding: 50px;
+            margin: 0;
+            font-family: Arial, Tahoma, sans-serif;
+            background: #f2f2f2;
             direction: rtl;
+            text-align: center;
         }
 
-        h1 {
-            color: #3333cc;
-            font-size: 3em;
+        header {
+            background: #004aad;
+            color: white;
+            padding: 40px 20px;
         }
 
-        p {
-            color: #555555;
-            font-size: 1.5em;
+        header img {
+            width: 120px;
+            margin-bottom: 15px;
         }
 
-        img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            margin-top: 20px;
-        }
-
-        .container {
-            background-color: #ffffff;
-            border-radius: 15px;
+        section {
+            background: white;
+            margin: 30px auto;
             padding: 30px;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #004aad;
+        }
+
+        .app-image {
+            width: 250px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .btn {
             display: inline-block;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 12px 25px;
+            background: #004aad;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background: #003080;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 15px;
+            color: #666;
+            font-size: 14px;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>مرحبا بكم في موقعي الشخصي</h1>
-        <p>هذا الموقع مخصص لي لأشارك معلوماتي وهواياتي</p>
-        <img src="monimage.jpg.png" alt="صورتي">
-    </div>
-</body>
 
+<body>
+
+<header>
+    <img src="monimage.png" alt="CMP SETIF">
+    <h1>مرحبًا بكم في الموقع الرسمي</h1>
+    <p>مركز معالجة الشكاوي - سطيف</p>
+</header>
+
+<section>
+    <h2>من نحن</h2>
+    <p>
+        هذا الموقع مخصص لعرض معلوماتي ومشاريعي،
+        ومن بينها تطبيق خاص بإدارة ومعالجة الشكاوي.
+    </p>
+</section>
+
+<section>
+    <h2>تطبيقي</h2>
+    <p>تطبيق لإرسال ومتابعة الشكاوي إلكترونيًا</p>
+
+    <img src="app.png" alt="صورة التطبيق" class="app-image">
+
+    <br>
+    <a href="#" class="btn">تحميل التطبيق (قريبًا)</a>
+</section>
+
+<footer>
+    © 2026 CMP SETIF - جميع الحقوق محفوظة
+</footer>
+
+</body>
 </html>
+
