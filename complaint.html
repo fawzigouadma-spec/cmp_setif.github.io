@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إرسال شكوى - CMP SETIF</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>إرسال شكوى</h1>
+    <p>املأ النموذج أدناه، وستصل شكواك مباشرة للإدارة</p>
+</header>
+
+<section>
+    <form id="complaintForm">
+        <input type="text" id="name" placeholder="الاسم الكامل" required>
+        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+        <textarea id="message" placeholder="اكتب شكواك هنا" required></textarea>
+        <button type="submit">إرسال الشكوى</button>
+    </form>
+
+    <p id="status"></p>
+
+    <br>
+    <a href="index.html" class="btn">⬅ العودة للصفحة الرئيسية</a>
+</section>
+
+<script>
+  // 🔐 إعدادات Firebase (الخاصة بمشروعك)
+  const firebaseConfig = {
+    apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
+    authDomain: "les-cmp-setif.firebaseapp.com",
+    projectId: "les-cmp-setif",
+    storageBucket: "les-cmp-setif.firebasestorage.app",
+    messagingSenderId: "300479385524",
+    appId: "1:300479385524:web:00ab999b49670176adece1"
+  };
+
+  // تشغيل Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const form = document.getElementById('complaintForm');
+  const status = document.getElementById('status');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    db.collection("complaints").add({
+      name: document.getElementById('name').value,
+      email: document.getElementById('email').value,
+      message: document.getElementById('message').value,
+      date: new Date()
+    })
+    .then(() => {
+      status.textContent = "✅ تم إرسال الشكوى بنجاح، سيتم الرد في أقرب وقت";
+      form.reset();
+    })
+    .catch((error) => {
+      status.textContent = "❌ حدث خطأ: " + error.message;
+    });
+  });
+</script>
+
+</body>
+</html>
