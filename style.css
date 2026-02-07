@@ -1,54 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap');
+
 body {
     margin: 0;
-    font-family: Arial, Tahoma;
+    font-family: 'Cairo', sans-serif;
     direction: rtl;
-    background: #f4f6f8;
+    background:
+        linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)),
+        url("background.png") no-repeat center center fixed;
+    background-size: contain;
     text-align: center;
 }
 
+/* الهيدر */
 header {
     background: linear-gradient(135deg, #004aad, #007bff);
     color: white;
-    padding: 40px 15px;
+    padding: 45px 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 18px;
+    opacity: 0.95;
+}
+
+/* الأقسام */
 section {
     background: white;
-    margin: 25px auto;
-    padding: 25px;
+    margin: 30px auto;
+    padding: 30px;
     width: 90%;
-    max-width: 800px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 850px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
 h2 {
     color: #004aad;
+    font-weight: 800;
 }
 
+/* الحقول */
+input, textarea {
+    width: 92%;
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: 'Cairo', sans-serif;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* الأزرار */
+button, .btn {
+    display: inline-block;
+    padding: 14px 35px;
+    background: linear-gradient(135deg, #004aad, #007bff);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover, .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+/* الصور */
 img {
     width: 260px;
-    border-radius: 15px;
-    margin-top: 15px;
+    border-radius: 18px;
+    margin-top: 20px;
 }
 
-.btn {
-    display: inline-block;
-    padding: 12px 30px;
-    background: #004aad;
-    color: white;
-    text-decoration: none;
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-.btn:hover {
-    background: #003080;
-}
-
+/* الفوتر */
 footer {
     background: #004aad;
     color: white;
-    padding: 15px;
-    margin-top: 30px;
+    padding: 18px;
+    margin-top: 40px;
+    font-size: 15px;
 }
