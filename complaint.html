@@ -162,7 +162,6 @@
 
 <script>
   // إعداد Firebase
-  // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
     authDomain: "les-cmp-setif.firebaseapp.com",
@@ -194,7 +193,7 @@
       date: new Date()
     };
 
-    db.collection("complaints").add(data)
+    db.collection("complaints.html)add(data)
       .then(() => {
         alert("✅ تم إرسال الشكوى بنجاح");
         form.reset();
