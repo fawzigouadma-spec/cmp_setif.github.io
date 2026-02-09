@@ -2,74 +2,125 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إرسال شكوى - CMP SETIF</title>
-    <link rel="stylesheet" href="style.css">
+    <title>استقبال شكاوى الزبائن | CMP SETIF</title>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            font-family: Tahoma, Arial;
+            background: #f2f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0b4da2;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: none;
+            height: 120px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #0b4da2;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #083b7a;
+        }
+    </style>
 </head>
+
 <body>
 
-<header>
-    <h1>إرسال شكوى</h1>
-    <p>املأ النموذج أدناه، وستصل شكواك مباشرة للإدارة</p>
-</header>
+<div class="container">
+    <h2>استمارة استقبال الشكاوى</h2>
 
-<section>
-    <form id="complaintForm">
-        <input type="text" id="name" placeholder="الاسم الكامل" required>
-        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-        <textarea id="message" placeholder="اكتب شكواك هنا" required></textarea>
-        <button onclick="sendComplaint()">إرسال الشكوى</button>
-    </form>
+    <label>الولاية</label>
+    <select>
+        <option>اختر الولاية</option>
+        <option>سطيف</option>
+        <option>برج بوعريريج</option>
+        <option>المسيلة</option>
+        <option>قسنطينة</option>
+    </select>
 
-    <p id="status"></p>
+    <label>البلدية</label>
+    <select>
+        <option>اختر البلدية</option>
+        <option>سطيف</option>
+        <option>عين أرنات</option>
+        <option>العلمة</option>
+    </select>
 
-    <br>
-    <a href="index.html" class="btn">⬅ العودة للصفحة الرئيسية</a>
-</section>
+    <label>نوع الخدمة</label>
+    <select>
+        <option>اختر نوع الخدمة</option>
+        <option>الهاتف الثابت</option>
+        <option>الإنترنت</option>
+        <option>الدفع الإلكتروني</option>
+        <option>خدمة الزبائن</option>
+    </select>
 
-<script>
-  // 🔐 إعدادات Firebase (الخاصة بمشروعك)
-  const firebaseConfig = {
-    apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
-    authDomain: "les-cmp-setif.firebaseapp.com",
-    projectId: "les-cmp-setif",
-    storageBucket: "les-cmp-setif.firebasestorage.app",
-    messagingSenderId: "300479385524",
-    appId: "1:300479385524:web:00ab999b49670176adece1"
-  };
+    <label>نوع الشكوى</label>
+    <select>
+        <option>اختر نوع الشكوى</option>
+        <option>انقطاع الخدمة</option>
+        <option>بطء الإنترنت</option>
+        <option>خطأ في الفاتورة</option>
+        <option>سوء المعاملة</option>
+    </select>
 
-  // تشغيل Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+    <label>الاسم الكامل</label>
+    <input type="text" placeholder="أدخل اسمك الكامل">
 
-  const form = document.getElementById('complaintForm');
-  const status = document.getElementById('status');
+    <label>رقم الهاتف</label>
+    <input type="tel" placeholder="05xxxxxxxx">
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+    <label>تفاصيل الشكوى</label>
+    <textarea placeholder="اكتب شكواك هنا بالتفصيل"></textarea>
 
-    db.collection("complaints").add({
-      name: document.getElementById('name').value,
-      email: document.getElementById('email').value,
-      message: document.getElementById('message').value,
-      date: new Date()
-    })
-    .then(() => {
-      status.textContent = "✅ تم إرسال الشكوى بنجاح، سيتم الرد في أقرب وقت";
-      form.reset();
-    })
-    .catch((error) => {
-      status.textContent = "❌ حدث خطأ: " + error.message;
-    });
-  });
+    <button onclick="sendComplaint()">إرسال الشكوى</button>
+</div>
+
 <script>
 function sendComplaint() {
-    alert("الزر يعمل بنجاح ✅");
+    alert("✅ تم الضغط على زر الإرسال بنجاح");
 }
 </script>
+
 </body>
 </html>
