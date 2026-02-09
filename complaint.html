@@ -1,126 +1,216 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>استقبال شكاوى الزبائن | CMP SETIF</title>
+  <meta charset="UTF-8">
+  <title>إرسال شكوى - CMP SETIF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style>
-        body {
-            font-family: Tahoma, Arial;
-            background: #f2f4f8;
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: "Tahoma", Arial, sans-serif;
+      background: linear-gradient(135deg, #0d6efd, #0a58ca);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
+    .container {
+      background: #ffffff;
+      width: 95%;
+      max-width: 700px;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    }
 
-        h2 {
-            text-align: center;
-            color: #0b4da2;
-        }
+    h1 {
+      text-align: center;
+      color: #0d6efd;
+      margin-bottom: 10px;
+    }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
+    p.subtitle {
+      text-align: center;
+      color: #555;
+      margin-bottom: 30px;
+      font-size: 15px;
+    }
 
-        select, input, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+    .form-group {
+      margin-bottom: 18px;
+    }
 
-        textarea {
-            resize: none;
-            height: 120px;
-        }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #333;
+    }
 
-        button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 12px;
-            background: #0b4da2;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
 
-        button:hover {
-            background: #083b7a;
-        }
-    </style>
+    input:focus, select:focus {
+      outline: none;
+      border-color: #0d6efd;
+    }
+
+    .row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+
+    .btn {
+      width: 100%;
+      background: #0d6efd;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #084298;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>استمارة استقبال الشكاوى</h2>
+  <h1>إرسال شكوى</h1>
+  <p class="subtitle">
+    مركز معالجة الشكاوي – إتصالات الجزائر سطيف
+  </p>
 
-    <label>الولاية</label>
-    <select>
-        <option>اختر الولاية</option>
-        <option>سطيف</option>
-        <option>برج بوعريريج</option>
-        <option>المسيلة</option>
-        <option>قسنطينة</option>
-    </select>
+  <form>
 
-    <label>البلدية</label>
-    <select>
-        <option>اختر البلدية</option>
-        <option>سطيف</option>
-        <option>عين أرنات</option>
-        <option>العلمة</option>
-    </select>
+    <!-- الولاية -->
+    <div class="form-group">
+      <label>الولاية</label>
+      <input type="text" value="سطيف" readonly>
+    </div>
 
-    <label>نوع الخدمة</label>
-    <select>
-        <option>اختر نوع الخدمة</option>
-        <option>الهاتف الثابت</option>
-        <option>الإنترنت</option>
-        <option>الدفع الإلكتروني</option>
-        <option>خدمة الزبائن</option>
-    </select>
+    <!-- المراكز التقنية لإتصالات الجزائر سطيف -->
+    <div class="form-group">
+      <label>المراكز التقنية لإتصالات الجزائر سطيف</label>
+      <select>
+        <option value="">المراكز التقنية لإتصالات الجزائر سطيف</option>
+        <option>إتصالات الجزائر سطيف
+</option>
+        <option>إتصالات الجزائر العلمة
+</option>
+        <option>إتصالات الجزائرعين ولمان
+</option>
+        <option>إتصالات الجزائربوقاعة
+</option>
+        <option>إتصالات الجزائرعين الكبيرة
+</option>
+        <option>إتصالات الجزائرعين أزال 
+</option>
+      </select>
+    </div>
 
-    <label>نوع الشكوى</label>
-    <select>
-        <option>اختر نوع الشكوى</option>
-        <option>انقطاع الخدمة</option>
-        <option>بطء الإنترنت</option>
-        <option>خطأ في الفاتورة</option>
-        <option>سوء المعاملة</option>
-    </select>
+    <!-- الاسم واللقب -->
+    <div class="row">
+      <div class="form-group">
+        <label>الاسم</label>
+        <input type="text" placeholder="الاسم">
+      </div>
+      <div class="form-group">
+        <label>اللقب</label>
+        <input type="text" placeholder="اللقب">
+      </div>
+    </div>
 
-    <label>الاسم الكامل</label>
-    <input type="text" placeholder="أدخل اسمك الكامل">
+    <!-- الهاتف -->
+    <div class="row">
+      <div class="form-group">
+        <label>الهاتف الثابت</label>
+        <input type="tel" placeholder="036xxxxxx">
+      </div>
+      <div class="form-group">
+        <label>الهاتف النقال</label>
+        <input type="tel" placeholder="05xxxxxxxx">
+      </div>
+    </div>
 
-    <label>رقم الهاتف</label>
-    <input type="tel" placeholder="05xxxxxxxx">
+    <!-- العنوان -->
+    <div class="form-group">
+      <label>العنوان</label>
+      <input type="text" placeholder="العنوان الكامل">
+    </div>
 
-    <label>تفاصيل الشكوى</label>
-    <textarea placeholder="اكتب شكواك هنا بالتفصيل"></textarea>
+    <!-- نوع الخدمة -->
+    <div class="form-group">
+      <label>نوع الخدمة</label>
+      <select>
+        <option value="">اختر نوع الخدمة</option>
+        <option>إنترنت</option>
+        <option>هاتف ثابت</option>
+        <option>الجيل الرابع 4G</option>
+      </select>
+    </div>
 
-    <button onclick="sendComplaint()">إرسال الشكوى</button>
+    <!-- نوع الشكوى -->
+    <div class="form-group">
+      <label>نوع الشكوى</label>
+      <select>
+        <option value="">اختر نوع الشكوى</option>
+        <option>إنقطاع الخدمة</option>
+        <option>بطء شديد في الإنترنت</option>
+        <option>تشويش في الخط</option>
+        <option>تأخر في التركيب</option>
+        <option>تأخر في التحويل</option>
+        <option>تعطل الهاتف</option>
+      </select>
+    </div>
+
+    <!-- موعد التسديد -->
+    <div class="form-group">
+      <label>موعد تسديد المستحقات (اختياري)</label>
+      <input type="date">
+    </div>
+
+    <!-- عدد مرات الشكوى -->
+    <div class="form-group">
+      <label>عدد مرات تقديم الشكوى (اختياري)</label>
+      <input type="number" min="0" placeholder="مثال: 1">
+    </div>
+
+    <!-- زر الإرسال -->
+    <button type="submit" class="btn">
+      إرسال الشكوى
+    </button>
+
+  </form>
+
+  <footer>
+    © 2026 CMP SETIF – جميع الحقوق محفوظة
+  </footer>
 </div>
-
-<script>
-function sendComplaint() {
-    alert("✅ تم الضغط على زر الإرسال بنجاح");
-}
-</script>
 
 </body>
 </html>
