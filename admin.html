@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>لوحة الإدارة</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
+      authDomain: "les-cmp-setif.firebaseapp.com",
+      projectId: "les-cmp-setif",
+      storageBucket: "les-cmp-setif.firebasestorage.app",
+      messagingSenderId: "300479385524",
+      appId: "1:300479385524:web:00ab999b49670176adece1"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+</head>
+
+<body>
+
+<h1>الشكاوي الواردة</h1>
+<div id="complaints"></div>
+
+<script>
+  db.collection("complaints")
+    .orderBy("date", "desc")
+    .onSnapshot(snapshot => {
+      let html = "";
+      snapshot.forEach(doc => {
+        const c = doc.data();
+        html += `
+          <div class="card">
+            <p><strong>الإسم:</strong> ${c.name}</p>
+            <p><strong>الهاتف:</strong> ${c.phone}</p>
+            <p><strong>الشكوى:</strong> ${c.message}</p>
+            <hr>
+          </div>
+        `;
+      });
+      document.getElementById("complaints").innerHTML = html;
+    });
+</script>
+
+</body>
+</html>
