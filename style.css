@@ -99,3 +99,24 @@ footer {
     margin-top: 40px;
     font-size: 15px;
 }
+form {
+  max-width: 400px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+input, textarea, button {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  margin: 10px auto;
+  max-width: 600px;
+  border-radius: 8px;
+}
