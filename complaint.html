@@ -25,87 +25,38 @@
       box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     }
 
-    h1 {
-      text-align: center;
-      color: #0d6efd;
-      margin-bottom: 10px;
-    }
+    h1 { text-align: center; color: #0d6efd; margin-bottom: 10px; }
+    p.subtitle { text-align: center; color: #555; margin-bottom: 30px; font-size: 15px; }
 
-    p.subtitle {
-      text-align: center;
-      color: #555;
-      margin-bottom: 30px;
-      font-size: 15px;
-    }
+    .form-group { margin-bottom: 18px; }
+    label { display: block; margin-bottom: 6px; font-weight: bold; color: #333; }
+    input, select { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; }
+    input:focus, select:focus { outline: none; border-color: #0d6efd; }
 
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #0d6efd;
-    }
-
-    .row {
-      display: flex;
-      gap: 15px;
-    }
-
-    .row .form-group {
-      flex: 1;
-    }
+    .row { display: flex; gap: 15px; }
+    .row .form-group { flex: 1; }
 
     .btn {
-      width: 100%;
-      background: #0d6efd;
-      color: #fff;
-      border: none;
-      padding: 14px;
-      font-size: 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.3s;
+      width: 100%; background: #0d6efd; color: #fff; border: none;
+      padding: 14px; font-size: 16px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s;
     }
+    .btn:hover { background: #084298; }
 
-    .btn:hover {
-      background: #084298;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 13px;
-      color: #777;
-    }
+    footer { text-align: center; margin-top: 20px; font-size: 13px; color: #777; }
   </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
 
 <div class="container">
   <h1>إرسال شكوى</h1>
-  <p class="subtitle">
-    مركز معالجة الشكاوي – إتصالات الجزائر سطيف
-  </p>
+  <p class="subtitle">مركز معالجة الشكاوي – إتصالات الجزائر سطيف</p>
 
-  <form>
+  <form id="complaintForm">
 
     <!-- الولاية -->
     <div class="form-group">
@@ -132,16 +83,16 @@
 </option>
       </select>
     </div>
-
+    
     <!-- الاسم واللقب -->
     <div class="row">
       <div class="form-group">
         <label>الاسم</label>
-        <input type="text" placeholder="الاسم">
+        <input type="text" id="firstName" placeholder="الاسم" required>
       </div>
       <div class="form-group">
         <label>اللقب</label>
-        <input type="text" placeholder="اللقب">
+        <input type="text" id="lastName" placeholder="اللقب" required>
       </div>
     </div>
 
@@ -149,24 +100,24 @@
     <div class="row">
       <div class="form-group">
         <label>الهاتف الثابت</label>
-        <input type="tel" placeholder="036xxxxxx">
+        <input type="tel" id="fixedPhone" placeholder="036xxxxxx">
       </div>
       <div class="form-group">
         <label>الهاتف النقال</label>
-        <input type="tel" placeholder="05xxxxxxxx">
+        <input type="tel" id="mobilePhone" placeholder="05xxxxxxxx">
       </div>
     </div>
 
     <!-- العنوان -->
     <div class="form-group">
       <label>العنوان</label>
-      <input type="text" placeholder="العنوان الكامل">
+      <input type="text" id="address" placeholder="العنوان الكامل">
     </div>
 
     <!-- نوع الخدمة -->
     <div class="form-group">
       <label>نوع الخدمة</label>
-      <select>
+      <select id="serviceType">
         <option value="">اختر نوع الخدمة</option>
         <option>إنترنت</option>
         <option>هاتف ثابت</option>
@@ -177,7 +128,7 @@
     <!-- نوع الشكوى -->
     <div class="form-group">
       <label>نوع الشكوى</label>
-      <select>
+      <select id="complaintType">
         <option value="">اختر نوع الشكوى</option>
         <option>إنقطاع الخدمة</option>
         <option>بطء شديد في الإنترنت</option>
@@ -191,19 +142,16 @@
     <!-- موعد التسديد -->
     <div class="form-group">
       <label>موعد تسديد المستحقات (اختياري)</label>
-      <input type="date">
+      <input type="date" id="dueDate">
     </div>
 
     <!-- عدد مرات الشكوى -->
     <div class="form-group">
       <label>عدد مرات تقديم الشكوى (اختياري)</label>
-      <input type="number" min="0" placeholder="مثال: 1">
+      <input type="number" id="complaintCount" min="0" placeholder="مثال: 1">
     </div>
 
-    <!-- زر الإرسال -->
-    <button type="submit" class="btn">
-      إرسال الشكوى
-    </button>
+    <button type="submit" class="btn">إرسال الشكوى</button>
 
   </form>
 
@@ -211,6 +159,50 @@
     © 2026 CMP SETIF – جميع الحقوق محفوظة
   </footer>
 </div>
+
+<script>
+  // إعداد Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
+    authDomain: "les-cmp-setif.firebaseapp.com",
+    projectId: "les-cmp-setif",
+    storageBucket: "les-cmp-setif.firebasestorage.app",
+    messagingSenderId: "300479385524",
+    appId: "1:300479385524:web:00ab999b49670176adece1"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // التعامل مع إرسال النموذج
+  const form = document.getElementById("complaintForm");
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = {
+      commune: document.getElementById("commune").value,
+      firstName: document.getElementById("firstName").value,
+      lastName: document.getElementById("lastName").value,
+      fixedPhone: document.getElementById("fixedPhone").value,
+      mobilePhone: document.getElementById("mobilePhone").value,
+      address: document.getElementById("address").value,
+      serviceType: document.getElementById("serviceType").value,
+      complaintType: document.getElementById("complaintType").value,
+      dueDate: document.getElementById("dueDate").value,
+      complaintCount: document.getElementById("complaintCount").value,
+      date: new Date()
+    };
+
+    db.collection("complaints").add(data)
+      .then(() => {
+        alert("✅ تم إرسال الشكوى بنجاح");
+        form.reset();
+      })
+      .catch((error) => {
+        alert("❌ حدث خطأ أثناء إرسال الشكوى: " + error.message);
+      });
+  });
+</script>
 
 </body>
 </html>
