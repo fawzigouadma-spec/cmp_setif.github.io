@@ -22,7 +22,7 @@
         <input type="text" id="name" placeholder="الاسم الكامل" required>
         <input type="email" id="email" placeholder="البريد الإلكتروني" required>
         <textarea id="message" placeholder="اكتب شكواك هنا" required></textarea>
-        <button type="button" onclick="alert('الزر يعمل')">اختبار</button>
+        <button onclick="sendComplaint()">إرسال الشكوى</button>
     </form>
 
     <p id="status"></p>
@@ -66,7 +66,10 @@
       status.textContent = "❌ حدث خطأ: " + error.message;
     });
   });
+<script>
+function sendComplaint() {
+    alert("الزر يعمل بنجاح ✅");
+}
 </script>
-
 </body>
 </html>
