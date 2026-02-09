@@ -23,6 +23,7 @@
       padding: 30px;
       border-radius: 14px;
       box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      position: relative;
     }
 
     h1 { text-align: center; color: #0d6efd; margin-bottom: 10px; }
@@ -37,10 +38,24 @@
     .row .form-group { flex: 1; }
 
     .btn {
-      width: 100%; background: #0d6efd; color: #fff; border: none;
-      padding: 14px; font-size: 16px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s;
+      width: 100%;
+      background: #0d6efd;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      margin-top: 10px;
     }
     .btn:hover { background: #084298; }
+
+    .btn-home {
+      background: #198754;
+    }
+    .btn-home:hover { background: #0f5132; }
 
     footer { text-align: center; margin-top: 20px; font-size: 13px; color: #777; }
   </style>
@@ -151,7 +166,11 @@
       <input type="number" id="complaintCount" min="0" placeholder="مثال: 1">
     </div>
 
+    <!-- زر الإرسال -->
     <button type="submit" class="btn">إرسال الشكوى</button>
+
+    <!-- زر العودة للصفحة الرئيسية -->
+    <a href="index.html" class="btn btn-home">🏠 العودة إلى الصفحة الرئيسية</a>
 
   </form>
 
@@ -171,8 +190,8 @@
     appId: "1:300479385524:web:00ab999b49670176adece1"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
   // التعامل مع إرسال النموذج
   const form = document.getElementById("complaintForm");
@@ -193,7 +212,7 @@
       date: new Date()
     };
 
-    db.collection("complaints.html)add(data)
+    db.collection("complaints").add(data)
       .then(() => {
         alert("✅ تم إرسال الشكوى بنجاح");
         form.reset();
