@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تتبع الشكوى - CMP SETIF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+   
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #004aad, #007bff); min-height: 100vh; display: flex; justify-content: center; align-items: center; margin: 0; padding: 20px; }
+        .track-container { background: white; width: 100%; max-width: 500px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
+        h1 { color: #004aad; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px; margin: 15px 0; border-radius: 10px; border: 2px solid #ddd; text-align: center; font-size: 18px; font-family: 'Cairo'; box-sizing: border-box; }
+        .btn-track { background: #004aad; color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; }
+       
+        #resultArea { display: none; margin-top: 30px; padding: 20px; border-radius: 15px; background: #f8f9fa; border: 1px solid #eee; }
+        .status-box { font-size: 20px; font-weight: bold; margin: 10px 0; }
+        .status-text { color: #0d6efd; }
+        .btn-home { display: inline-block; margin-top: 20px; color: #666; text-decoration: none; font-size: 14px; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<div class="track-container">
+    <h1>تتبع حالة الشكوى</h1>
+    <p>أدخل رقم التتبع الخاص بك (مثلاً: CMP-123456)</p>
+   
+    <input type="text" id="ticketInput" placeholder="أدخل الرقم هنا...">
+    <button class="btn-track" onclick="trackTicket()">بحث عن الشكوى</button>
+
+    <div id="resultArea">
+        <p>مرحباً بك: <strong id="userName"></strong></p>
+        <div class="status-box">حالة الشكوى: <span id="statusText" class="status-text"></span></div>
+        <p id="techCenterInfo" style="font-size: 14px; color: #555;"></p>
+        <hr>
+        <p id="updateDate" style="font-size: 12px; color: #999;"></p>
+    </div>
+
+    <a href="index.html" class="btn-home">⬅ العودة للصفحة الرئيسية</a>
+</div>
+
+<script>
+    // إعداد Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
+        authDomain: "les-cmp-setif.firebaseapp.com",
+        projectId: "les-cmp-setif",
+        storageBucket: "les-cmp-setif.firebasestorage.app",
+        messagingSenderId: "300479385524",
+        appId: "1:300479385524:web:00ab999b49670176adece1"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function trackTicket() {
+        const ticketID = document.getElementById("ticketInput").value.trim();
+        const resultArea = document.getElementById("resultArea");
+
+        if(!ticketID) {
+            alert("يرجى إدخال رقم التتبع");
+            return;
+        }
+
+        // البحث في قاعدة البيانات عن الشكوى التي تحمل هذا الرقم
+        db.collection("complaints").where("ticketID", "==", ticketID).get()
+        .then((querySnapshot) => {
+            if (querySnapshot.empty) {
+                alert("عذراً، لم يتم العثور على شكوى بهذا الرقم. تأكد من صحة الرقم.");
+                resultArea.style.display = "none";
+            } else {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    resultArea.style.display = "block";
+                    document.getElementById("userName").innerText = data.firstName + " " + data.lastName;
+                    document.getElementById("statusText").innerText = data.status || "قيد الانتظار";
+                    document.getElementById("techCenterInfo").innerText = "المركز المسؤول: " + data.techCenter;
+                   
+                    const date = data.date ? data.date.toDate().toLocaleDateString('ar-DZ') : "غير متوفر";
+                    document.getElementById("updateDate").innerText = "تاريخ التقديم: " + date;
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error getting documents: ", error);
+        });
+    }
+</script>
+
+</body>
+</html>
