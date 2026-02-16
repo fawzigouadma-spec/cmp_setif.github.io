@@ -145,13 +145,19 @@
         </form>
     </div>
 
-    <div id="successCard">
-        <h2 style="color: var(--secondary)">تم إرسال الشكوى بنجاح! ✅</h2>
-        <p>رقم تتبع شكواكم هو:</p>
-        <div class="ticket-box" id="ticketDisplay"></div>
-        <p style="font-size: 14px; color: #555;">يرجى الاحتفاظ بهذا الرقم لمتابعة حالة طلبك.</p>
-        <button onclick="window.location.reload()" class="btn" style="background: var(--secondary);">إرسال شكوى أخرى</button>
-    </div>
+    <div id="successCard" style="display:none; text-align:center;">
+    <h2>تم إرسال الشكوى بنجاح! ✅</h2>
+    <p>رقم تتبع شكواكم هو:</p>
+    <div class="ticket-box" id="ticketDisplay"></div>
+   
+    <p style="margin-top:15px;">
+        يمكنك متابعة حالة طلبك من
+        <a href="track.html" style="color:blue; font-weight:bold;">صفحة التتبع</a>
+        باستخدام هذا الرقم.
+    </p>
+
+    <button onclick="window.location.reload()" class="btn">إرسال شكوى أخرى</button>
+</div>
 </div>
 
 <script>
