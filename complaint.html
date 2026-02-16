@@ -4,96 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إرسال شكوى - CMP SETIF</title>
-   
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
    
     <style>
-        :root {
-            --primary-color: #0d6efd;
-            --secondary-color: #198754;
-            --glass-bg: rgba(255, 255, 255, 0.9);
-        }
-
+        :root { --primary: #0d6efd; --secondary: #198754; }
         body {
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
+            margin: 0; font-family: 'Cairo', sans-serif;
             background: linear-gradient(135deg, #004aad, #007bff);
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;
         }
-
         .container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            width: 100%;
-            max-width: 600px;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%; max-width: 750px; padding: 30px;
+            border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
-
-        h1 { text-align: center; color: var(--primary-color); margin-bottom: 5px; font-weight: 700; }
-        p.subtitle { text-align: center; color: #555; margin-bottom: 30px; font-size: 0.9rem; }
-
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
-       
+        h1 { text-align: center; color: var(--primary); margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: #555; margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; font-size: 14px; }
         input, select {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.3s;
-            box-sizing: border-box;
+            width: 100%; padding: 10px; border-radius: 8px;
+            border: 1px solid #ccc; font-family: 'Cairo', sans-serif; box-sizing: border-box;
         }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px rgba(13, 110, 253, 0.2);
-        }
-
-        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-
+        .row { display: flex; gap: 15px; flex-wrap: wrap; }
+        .row .form-group { flex: 1; min-width: 200px; }
         .btn {
-            width: 100%;
-            background: var(--primary-color);
-            color: #fff;
-            border: none;
-            padding: 15px;
-            font-size: 1.1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            margin-top: 15px;
+            width: 100%; background: var(--primary); color: white; border: none;
+            padding: 14px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px;
         }
-
-        .btn:hover { background: #004aad; transform: translateY(-2px); }
-        .btn-home { background: #6c757d; text-decoration: none; display: block; text-align: center; margin-top: 10px; }
-
-        /* ستايل رقم الشكوى بعد النجاح */
+        .btn-home { background: #6c757d; text-decoration: none; display: block; text-align: center; margin-top: 10px; color: white; }
         #successCard {
-            display: none;
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px solid var(--secondary-color);
-            margin-top: 20px;
+            display: none; text-align: center; padding: 20px;
+            border: 2px solid var(--secondary); border-radius: 15px; background: #f9fffb;
         }
-        .ticket-number {
-            font-size: 1.5rem;
-            color: var(--secondary-color);
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
+        .ticket-box { font-size: 24px; color: var(--secondary); font-weight: bold; margin: 15px 0; padding: 10px; border: 2px dashed var(--secondary); }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -102,75 +46,106 @@
 <body>
 
 <div class="container">
-    <h1>إرسال شكوى</h1>
-    <p class="subtitle">مركز معالجة الشكاوي – إتصالات الجزائر سطيف</p>
+    <div id="formSection">
+        <h1>إرسال شكوى</h1>
+        <p class="subtitle">مركز معالجة الشكاوي – إتصالات الجزائر سطيف</p>
 
-    <form id="complaintForm">
-        <div class="form-group">
-            <label>المراكز التقنية</label>
-            <select id="techCenter" required>
-                <option value="">اختر المركز التقني...</option>
-                <option>إتصالات الجزائر سطيف</option>
-                <option>إتصالات الجزائر العلمة</option>
-                <option>إتصالات الجزائر عين ولمان</option>
-                <option>إتصالات الجزائر بوقاعة</option>
-                <option>إتصالات الجزائر عين الكبيرة</option>
-                <option>إتصالات الجزائر عين أزال</option>
-            </select>
-        </div>
-
-        <div class="row">
-            <div class="form-group">
-                <label>الاسم</label>
-                <input type="text" id="firstName" placeholder="الاسم" required>
+        <form id="complaintForm">
+            <div class="row">
+                <div class="form-group">
+                    <label>الولاية</label>
+                    <input type="text" value="سطيف" readonly style="background: #eee;">
+                </div>
+                <div class="form-group">
+                    <label>المراكز التقنية</label>
+                    <select id="techCenter" required>
+                        <option value="">اختر المركز...</option>
+                        <option>إتصالات الجزائر سطيف</option>
+                        <option>إتصالات الجزائر العلمة</option>
+                        <option>إتصالات الجزائر عين ولمان</option>
+                        <option>إتصالات الجزائر بوقاعة</option>
+                        <option>إتصالات الجزائر عين الكبيرة</option>
+                        <option>إتصالات الجزائر عين أزال</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label>اللقب</label>
-                <input type="text" id="lastName" placeholder="اللقب" required>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="form-group">
-                <label>الهاتف النقال</label>
-                <input type="tel" id="mobilePhone" placeholder="05/06/07" required>
+            <div class="row">
+                <div class="form-group">
+                    <label>الاسم</label>
+                    <input type="text" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label>اللقب</label>
+                    <input type="text" id="lastName" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label>نوع الخدمة</label>
-                <select id="serviceType" required>
-                    <option value="">اختر الخدمة...</option>
-                    <option>إيدوم إنترنت Idoom</option>
-                    <option>هاتف ثابت</option>
-                    <option>الجيل الرابع 4G</option>
-                </select>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>الهاتف الثابت</label>
+                    <input type="tel" id="fixedPhone" placeholder="036xxxxxx">
+                </div>
+                <div class="form-group">
+                    <label>الهاتف النقال</label>
+                    <input type="tel" id="mobilePhone" placeholder="05/06/07xxxx" required>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label>وصف المشكلة</label>
-            <select id="complaintType" required>
-                <option value="">نوع المشكلة...</option>
-                <option>إنقطاع كلي</option>
-                <option>ضعف التدفق</option>
-                <option>مشكل في الفاتورة</option>
-                <option>طلب تحويل الخط</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>العنوان الكامل</label>
+                <input type="text" id="address" required>
+            </div>
 
-        <button type="submit" id="submitBtn" class="btn">إرسال الطلب الآن</button>
-        <a href="index.html" class="btn btn-home">العودة للرئيسية</a>
-    </form>
+            <div class="row">
+                <div class="form-group">
+                    <label>نوع الخدمة</label>
+                    <select id="serviceType" required>
+                        <option value="">اختر نوع الخدمة...</option>
+                        <option>إنترنت</option>
+                        <option>هاتف ثابت</option>
+                        <option>الجيل الرابع 4G</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>نوع الشكوى</label>
+                    <select id="complaintType" required>
+                        <option value="">اختر نوع الشكوى...</option>
+                        <option>إنقطاع الخدمة</option>
+                        <option>بطء شديد في الإنترنت</option>
+                        <option>تشويش في الخط</option>
+                        <option>تأخر في التركيب</option>
+                        <option>تعطل الهاتف</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>موعد تسديد المستحقات (اختياري)</label>
+                    <input type="date" id="dueDate">
+                </div>
+                <div class="form-group">
+                    <label>عدد مرات تقديم الشكوى</label>
+                    <input type="number" id="complaintCount" min="0" value="1">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn">إرسال الشكوى</button>
+            <a href="index.html" class="btn btn-home">🏠 العودة للرئيسية</a>
+        </form>
+    </div>
 
     <div id="successCard">
-        <h2 style="color: var(--secondary-color)">تم الإرسال بنجاح! ✅</h2>
-        <p>يرجى الاحتفاظ برقم الشكوى للمتابعة:</p>
-        <div class="ticket-number" id="ticketDisplay"></div>
-        <button onclick="window.location.reload()" class="btn">إرسال شكوى أخرى</button>
+        <h2 style="color: var(--secondary)">تم إرسال شكواكم بنجاح! ✅</h2>
+        <p>رقم التتبع الخاص بك هو:</p>
+        <div class="ticket-box" id="ticketDisplay"></div>
+        <p style="font-size: 13px; color: #666;">يرجى تصوير الشاشة للاحتفاظ بالرقم</p>
+        <button onclick="window.location.reload()" class="btn" style="background: var(--secondary);">إرسال شكوى جديدة</button>
     </div>
 </div>
 
 <script>
-    // إعداد Firebase (استخدم بياناتك هنا)
     const firebaseConfig = {
         apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
         authDomain: "les-cmp-setif.firebaseapp.com",
@@ -185,44 +160,39 @@
 
     const form = document.getElementById("complaintForm");
     const submitBtn = document.getElementById("submitBtn");
-    const successCard = document.getElementById("successCard");
-    const ticketDisplay = document.getElementById("ticketDisplay");
 
     form.addEventListener("submit", function(e) {
         e.preventDefault();
-       
-        // تعطيل الزر لتجنب التكرار
         submitBtn.disabled = true;
-        submitBtn.innerText = "جاري الإرسال...";
+        submitBtn.innerText = "جاري الحفظ...";
 
-        // توليد رقم تتبع عشوائي احترافي
-        const ticketID = "SETIF-" + Math.floor(1000 + Math.random() * 9000);
+        const ticketID = "CMP-" + Math.floor(100000 + Math.random() * 900000);
 
         const data = {
             ticketID: ticketID,
             techCenter: document.getElementById("techCenter").value,
             firstName: document.getElementById("firstName").value,
             lastName: document.getElementById("lastName").value,
+            fixedPhone: document.getElementById("fixedPhone").value,
             mobilePhone: document.getElementById("mobilePhone").value,
+            address: document.getElementById("address").value,
             serviceType: document.getElementById("serviceType").value,
             complaintType: document.getElementById("complaintType").value,
-            status: "جديدة", // حالة الشكوى الافتراضية
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            dueDate: document.getElementById("dueDate").value,
+            complaintCount: document.getElementById("complaintCount").value,
+            status: "قيد الانتظار",
+            date: firebase.firestore.FieldValue.serverTimestamp()
         };
 
-        db.collection("complaints").add(data)
-        .then(() => {
-            form.style.display = "none";
-            successCard.style.display = "block";
-            ticketDisplay.innerText = ticketID;
-        })
-        .catch((error) => {
-            alert("خطأ: " + error.message);
+        db.collection("complaints").add(data).then(() => {
+            document.getElementById("formSection").style.display = "none";
+            document.getElementById("successCard").style.display = "block";
+            document.getElementById("ticketDisplay").innerText = ticketID;
+        }).catch(err => {
+            alert("خطأ: " + err.message);
             submitBtn.disabled = false;
-            submitBtn.innerText = "إرسال الطلب الآن";
         });
     });
 </script>
-
 </body>
 </html>
