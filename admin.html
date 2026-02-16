@@ -1,51 +1,162 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>لوحة الإدارة</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة إدارة الشكاوي - CMP SETIF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+   
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #004aad;
+            margin-bottom: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #004aad;
+            color: white;
+        }
+        tr:hover { background-color: #f9f9f9; }
 
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+        /* ستايل حالات الشكوى */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-new { background-color: #dc3545; }    /* أحمر */
+        .status-process { background-color: #ffc107; color: #000; } /* أصفر */
+        .status-done { background-color: #198754; }   /* أخضر */
 
-  <script>
+        .btn-action {
+            padding: 5px 8px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 11px;
+            margin-left: 2px;
+        }
+        .btn-done { background-color: #198754; color: white; }
+        .btn-process { background-color: #ffc107; color: black; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>لوحة التحكم في الشكاوي الواردة</h1>
+   
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>رقم التتبع</th>
+                    <th>التاريخ</th>
+                    <th>الاسم واللقب</th>
+                    <th>الهاتف (ثابت/نقال)</th>
+                    <th>المركز التقني</th>
+                    <th>نوع الشكوى</th>
+                    <th>الحالة</th>
+                    <th>إجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="complaintsTable">
+                </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // إعداد Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
-      authDomain: "les-cmp-setif.firebaseapp.com",
-      projectId: "les-cmp-setif",
-      storageBucket: "les-cmp-setif.firebasestorage.app",
-      messagingSenderId: "300479385524",
-      appId: "1:300479385524:web:00ab999b49670176adece1"
+        apiKey: "AIzaSyClGKlEHeuLkzBPx6NAKamYRG7zHhAWkGg",
+        authDomain: "les-cmp-setif.firebaseapp.com",
+        projectId: "les-cmp-setif",
+        storageBucket: "les-cmp-setif.firebasestorage.app",
+        messagingSenderId: "300479385524",
+        appId: "1:300479385524:web:00ab999b49670176adece1"
     };
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-  </script>
-</head>
 
-<body>
+    // جلب البيانات وتحديث الجدول تلقائياً
+    db.collection("complaints").orderBy("date", "desc").onSnapshot(snapshot => {
+        let html = "";
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const id = doc.id;
+           
+            // تحديد كلاس الحالة
+            let statusClass = "status-new";
+            if(data.status === "جاري المعالجة") statusClass = "status-process";
+            if(data.status === "تم التصليح") statusClass = "status-done";
 
-<h1>الشكاوي الواردة</h1>
-<div id="complaints"></div>
+            // تنسيق التاريخ
+            const date = data.date ? data.date.toDate().toLocaleString('ar-DZ') : "جاري الإرسال...";
 
-<script>
-  db.collection("complaints")
-    .orderBy("date", "desc")
-    .onSnapshot(snapshot => {
-      let html = "";
-      snapshot.forEach(doc => {
-        const c = doc.data();
-        html += `
-          <div class="card">
-            <p><strong>الإسم:</strong> ${c.name}</p>
-            <p><strong>الهاتف:</strong> ${c.phone}</p>
-            <p><strong>الشكوى:</strong> ${c.message}</p>
-            <hr>
-          </div>
-        `;
-      });
-      document.getElementById("complaints").innerHTML = html;
+            html += `
+                <tr>
+                    <td><strong>${data.ticketID || 'بدون رقم'}</strong></td>
+                    <td>${date}</td>
+                    <td>${data.firstName} ${data.lastName}</td>
+                    <td>${data.fixedPhone || '-'} / ${data.mobilePhone}</td>
+                    <td>${data.techCenter}</td>
+                    <td>${data.complaintType}</td>
+                    <td><span class="status-badge ${statusClass}">${data.status || 'جديدة'}</span></td>
+                    <td>
+                        <button class="btn-action btn-process" onclick="updateStatus('${id}', 'جاري المعالجة')">معالجة</button>
+                        <button class="btn-action btn-done" onclick="updateStatus('${id}', 'تم التصليح')">تم</button>
+                    </td>
+                </tr>
+            `;
+        });
+        document.getElementById("complaintsTable").innerHTML = html;
     });
+
+    // وظيفة تحديث حالة الشكوى
+    function updateStatus(docId, newStatus) {
+        db.collection("complaints").doc(docId).update({
+            status: newStatus
+        }).then(() => {
+            console.log("تم تحديث الحالة بنجاح");
+        }).catch(error => {
+            alert("خطأ في التحديث: " + error.message);
+        });
+    }
 </script>
 
 </body>
